@@ -10,7 +10,7 @@ from .serializers import (
     CheckoutHistorySerializer,
 )
 
-
+# Mixin to retrieve objects by primary key
 class ObjectRetrieveMixin:
     def get_object(self, model, pk):
         try:
@@ -18,7 +18,7 @@ class ObjectRetrieveMixin:
         except model.DoesNotExist:
             raise Http404
 
-
+# API view for listing and creating companies
 class CompanyListAPIView(APIView):
     def get(self, request):
         companies = Company.objects.all()
@@ -32,7 +32,7 @@ class CompanyListAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+# API view for retrieving, updating, and deleting individual companies
 class CompanyDetailAPIView(APIView, ObjectRetrieveMixin):
     def get(self, request, pk):
         company = self.get_object(Company, pk)
@@ -52,7 +52,7 @@ class CompanyDetailAPIView(APIView, ObjectRetrieveMixin):
         company.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+# API view for listing and creating employees
 class EmployeeListAPIView(APIView):
     def get(self, request):
         employees = Employee.objects.all()
@@ -65,7 +65,8 @@ class EmployeeListAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
+# API view for retrieving, updating, and deleting individual employees
 class EmployeeDetailAPIView(APIView, ObjectRetrieveMixin):
     def get(self, request, pk):
         employee = self.get_object(Employee, pk)
@@ -93,7 +94,7 @@ class EmployeeDetailAPIView(APIView, ObjectRetrieveMixin):
         employee.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+# API view for listing and creating assets
 class AssetListAPIView(APIView):
     def get(self, request):
         assets = Asset.objects.all()
@@ -107,6 +108,7 @@ class AssetListAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# API view for retrieving, updating, and deleting individual assets
 class AssetDetailAPIView(APIView, ObjectRetrieveMixin):
     def get(self, request, pk):
         asset = self.get_object(Asset, pk)
@@ -126,7 +128,7 @@ class AssetDetailAPIView(APIView, ObjectRetrieveMixin):
         asset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+# API view for listing and creating checkoutHistory
 class CheckoutHistoryListAPIView(APIView):
     def get(self, request):
         checkout_histories = CheckoutHistory.objects.all()
@@ -139,7 +141,8 @@ class CheckoutHistoryListAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+# API view for retrieving, updating, and deleting individual checkoutHistory    
 class CheckoutHistoryDetailAPIView(APIView, ObjectRetrieveMixin):
     def get(self, request, pk):
         checkout_history = self.get_object(CheckoutHistory, pk)
